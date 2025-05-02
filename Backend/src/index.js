@@ -1,13 +1,19 @@
 const express = require("express");
+const cors = require("cors");
+const path = require("path");
 const app = express();
-const dotenv = require("dotenv");
 const db = require("./models/");
 const port = process.env.PORT || 3000;
 
 
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
+
+ 
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 
 // Cargar relaciones
@@ -15,6 +21,9 @@ require("./models/relations")
 
 // Cargar rutas
 require("./routes/index")(app);
+
+
+
 
 
 db.sequelize
