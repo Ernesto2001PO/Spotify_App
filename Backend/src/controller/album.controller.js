@@ -1,6 +1,6 @@
 const db = require("../models/")
 const zod = require("zod");
-const { upload } = require("../config/multer-config");
+const { upload, getRelativePath } = require("../config/multer-config");
 
 
 exports.getAlbums = async (req, res) => {
@@ -18,26 +18,26 @@ exports.getAlbums = async (req, res) => {
     }
 }
 
-exports.getAlbumById = async (req, res) => {
-    const id = req.params.id;
+exports.getAlbumByArtist = async (req, res) => {
+    const { id_artista } = req.params;
     try {
-        const album = await db.Album.findByPk(id);
-        if (!album) {
-            return res.status(404).json({
-                message: "Album no encontrado",
-            });
-        }
-        console.log("Album encontrado:", { album });
-
-        res.send(album);
+        const albums = await db.Album.findAll({
+            where: {
+                id_artista: parseInt(id_artista),
+            },
+        });
+        console.log("Valor de id_album:", id_artista);
+        console.log("Albums encontrados por artistas:", { albums });
+        res.send(albums);
     } catch (error) {
-        console.error("Error al obtener el album:", error);
+        console.error("Error al obtener los album por género:", error);
         res.status(500).json({
-            message: "Error al obtener el album",
+            message: "Error al obtener los albu, por género",
             error: error.message,
         });
     }
 }
+
 
 
 exports.createAlbum = async (req, res) => {
@@ -74,6 +74,9 @@ exports.createAlbum = async (req, res) => {
                 message: "El album ya existe",
             });
         }
+
+        const imagen = req.file ? getRelativePath(req.file.path) : null;
+
         const newAlbum = await db.Album.create({
             nombre,
             imagen,
@@ -125,10 +128,13 @@ exports.createAlbum = [
                     message: "El album ya existe",
                 });
             }
-            // Guardar el nuevo álbum con la ruta de la imagen
+
+            const imagen = req.file ? getRelativePath(req.file.path) : null;
+
+
             const newAlbum = await db.Album.create({
                 nombre,
-                imagen: req.file ? req.file.path : null,
+                imagen,
                 id_artista: parseInt(id_artista),
             });
             console.log("Album creado:", { newAlbum });
@@ -137,7 +143,7 @@ exports.createAlbum = [
             console.error("Error al crear el album:", error);
             if (req.file) {
                 // Eliminar la imagen del servidor si hubo un error
-                const imagen = require("fs");   
+                const imagen = require("fs");
                 imagen.unlink(req.file.path, (err) => {
                     if (err) {
                         console.error("Error al eliminar la imagen:", err);
@@ -183,10 +189,13 @@ exports.updateAlbum = [
                     message: "Album no encontrado",
                 });
             }
+
+            const nuevaImagen = req.file ? getRelativePath(req.file.path) : null;
+
             // Actualizar el álbum con la nueva información
             await existingAlbum.update({
                 nombre,
-                imagen: req.file ? req.file.path : existingAlbum.imagen,
+                imagen:nuevaImagen,
                 id_artista: parseInt(id_artista),
             });
             console.log("Album actualizado:", { existingAlbum });
@@ -218,7 +227,7 @@ exports.patchAlbum = async (req, res) => {
     if (!album) {
         return res.status(404).send({ message: 'Persona no encontrada' });
     }
-    const { nombre,imagen,id_artista} = req.body;
+    const { nombre, imagen, id_artista } = req.body;
     if (nombre) {
         album.nombre = nombre;
     }

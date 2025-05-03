@@ -74,9 +74,13 @@ exports.createCancion = [
                     message: "El cancion ya existe",
                 });
             }
+
+            const audio = req.file ? getRelativePath(req.file.path) : null;
+
+
             const newCancion = await db.Cancion.create({
                 nombre,
-                audio: req.file ? req.file.path : null,
+                audio,
                 id_album: parseInt(id_album),
             });
             console.log("Cancion creado:", { newCancion });
@@ -124,10 +128,12 @@ exports.updateCancion = [
                     message: "Cancion no encontrado",
                 });
             }
-            // Actualizar el álbum con la nueva información
+
+            const cancionNueva = req.file ? getRelativePath(req.file.path) : null;
+
             await existingCancion.update({
                 nombre,
-                audio: req.file ? req.file.path : existingCancion.imagen,
+                audio: cancionNueva,
                 id_album: parseInt(id_album),
             });
             console.log("Cancion actualizado:", { existingCancion });

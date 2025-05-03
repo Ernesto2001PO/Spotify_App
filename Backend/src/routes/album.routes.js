@@ -3,7 +3,7 @@ module.exports = (app) => {
     const albumController = require("../controller/album.controller.js");
 
     router.get("/album", albumController.getAlbums);
-    router.get("/album/:id", albumController.getAlbumById);
+    router.get("/album/:id_artista", albumController.getAlbumByArtist);
     router.post("/album", albumController.createAlbum);
 
 

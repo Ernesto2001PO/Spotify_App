@@ -35,4 +35,10 @@ const storage = multer.diskStorage({
 // Middleware de multer
 const upload = multer({ storage });
 
-module.exports = { upload };
+// Función para obtener la ruta relativa del archivo subido
+const getRelativePath = (filePath) => {
+    const relativePath = path.relative(path.join(__dirname, "../../"), filePath);
+    return relativePath.replace(/\\/g, "/"); // Asegúrate de usar "/" en lugar de "\"
+};
+
+module.exports = { upload, getRelativePath };

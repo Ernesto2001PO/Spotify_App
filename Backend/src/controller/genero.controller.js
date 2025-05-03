@@ -1,6 +1,7 @@
 const db = require("../models/")
 const zod = require("zod");
 const { upload } = require("../config/multer-config");
+const { get } = require("http");
 
 
 exports.getGeneros = async (req, res) => {
@@ -68,10 +69,13 @@ exports.createGenero = [
                     message: "El genero ya existe",
                 });
             }
+
+            const imagen = req.file ? getRelativePath(req.file.path) : null;
+
             // Guardar el nuevo álbum con la ruta de la imagen
             const newGenero = await db.Genero.create({
                 nombre,
-                imagen: req.file ? req.file.path : null,
+                imagen,
             });
             console.log("Genero creado:", { newGenero });
             res.status(201).json(newGenero);
@@ -119,10 +123,14 @@ exports.updateGenero = [
                     message: "Genero no encontrado",
                 });
             }
+            
+
+            const Nuevaimagen = req.file ? getRelativePath(req.file.path) : null;
+
             // Actualizar el álbum con la nueva información
             await existingGenero.update({
                 nombre,
-                imagen: req.file ? req.file.path : existingGenero.imagen,
+                imagen: Nuevaimagen,
             });
             console.log("Genero actualizado:", { existingGenero });
             res.status(200).json(existingGenero);

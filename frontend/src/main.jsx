@@ -20,7 +20,7 @@ createRoot(document.getElementById("root")).render(
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/album" element={<Albums />} />
+        <Route path="/artists/albums/:idArtista" element={<Albums />} />
         <Route path="/genres/artists/:idGenero" element={<Artist />} />
         <Route path="/songs" element={<Songs />} />
         <Route path="/genres" element={<Genres />} />

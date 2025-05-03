@@ -82,11 +82,14 @@ exports.createArtista = [
                     message: "El artista ya existe",
                 });
             }
-            console.log("Artista no existente, creando nuevo artista");
-            // Guardar el nuevo álbum con la ruta de la imagen
+
+            const imagen = req.file ? getRelativePath(req.file.path) : null;
+
+
+
             const newArtista = await db.Artista.create({
                 nombre,
-                imagen: req.file ? req.file.path : null,
+                imagen: imagen,
                 id_genero: parseInt(id_genero),
             });
             console.log("Artista creado:", { newArtista });
@@ -141,10 +144,12 @@ exports.updateArtista = [
                     message: "Artista no encontrado",
                 });
             }
-            // Actualizar el álbum con la nueva información
+
+            const nuevaImagen = req.file ? getRelativePath(req.file.path) : null;
+
             await existingArtista.update({
                 nombre,
-                imagen: req.file ? req.file.path : existingArtista.imagen,
+                imagen: nuevaImagen,
                 id_genero: parseInt(id_genero),
             });
             console.log("Artista actualizado:", { existingArtista });

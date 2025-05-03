@@ -70,11 +70,10 @@ function Artist() {
               <CardComponent
                 title={artist.nombre}
                 imageUrl={`${BASEURL}/${artist.imagen}`}
-                buttonLink={`/artista/${artist.id_artista}`}
+                buttonLink={`/artists/albums/${artist.id_artista}`} 
               />
             </Col>
           ))}
-          
         </Row>
       </Container>
     </div>

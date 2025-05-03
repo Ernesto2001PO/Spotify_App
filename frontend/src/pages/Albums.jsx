@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom"; 
+
 import CardComponent from "../components/CardComponent";
 import { Row, Col, Container } from "react-bootstrap";
 import AlbumRepository from "../repositories/Albumrepository";
@@ -8,11 +10,12 @@ function Albums() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const BASEURL = "http://localhost:3000";
+  const { idArtista } = useParams(); 
 
   useEffect(() => {
     const fetchAlbums = async () => {
       try {
-        const data = await AlbumRepository.getAllAlbums();
+        const data = await AlbumRepository.getAllAlbums(idArtista);
         console.log("Data fetched:", data);
         setAlbums(data);
       } catch (error) {
@@ -23,7 +26,7 @@ function Albums() {
     };
 
     fetchAlbums();
-  }, []);
+  }, [idArtista]);
 
   if (loading) {
     return <div>Loading...</div>;
