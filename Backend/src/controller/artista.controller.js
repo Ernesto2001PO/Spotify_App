@@ -18,45 +18,49 @@ exports.getArtistas = async (req, res) => {
     }
 }
 
-exports.getartistaById = async (req, res) => {
-    const id = req.params.id;
+exports.getArtistaByGenero = async (req, res) => {
+    const {id_genero} = req.params;
     try {
-        const artista = await db.Artista.findByPk(id);
-        if (!artista) {
-            return res.status(404).json({
-                message: "Artista no encontrado",
-            });
-        }
-        console.log("Artista encontrado:", { artista });
-
-        res.send(artista);
+        const artistas = await db.Artista.findAll({
+            where: {
+                id_genero: parseInt(id_genero),
+            },
+        });
+        console.log("Valor de id_genero:", id_genero);
+        console.log("Artistas encontrados por género:", { artistas });
+        res.send(artistas);
     } catch (error) {
-        console.error("Error al obtener el artista:", error);
+        console.error("Error al obtener los artistas por género:", error);
         res.status(500).json({
-            message: "Error al obtener el artista",
+            message: "Error al obtener los artistas por género",
             error: error.message,
         });
-    }
+    } 
 }
 
 
 
 exports.createArtista = [
-    upload.single("imagen"), // Middleware para procesar el archivo con el campo "imagen"
+    upload.single("imagen"), 
     async (req, res) => {
         const { nombre, id_genero } = req.body;
         try {
+            console.log("Inicio de createArtista");
+
             const artistaValidate = zod.object({
                 nombre: zod.string().min(1, "El nombre es requerido"),
                 id_genero: zod.string().min("El id del artista debe ser un número positivo"),
             });
-            const result = artistaValidate.safeParse({ nombre, id_genero });
+
+            const result = artistaValidate.safeParse({ nombre, id_genero});
             if (!result.success) {
                 return res.status(400).json({
                     message: "Error de validación",
                     errors: result.error.errors,
                 });
             }
+
+            console.log("Validación exitosa");
 
 
             const genero = await db.Genero.findByPk(id_genero);
@@ -72,11 +76,13 @@ exports.createArtista = [
                     id_genero,
                 },
             });
+            console.log("Artista existente:", { existingArtista });
             if (existingArtista) {
                 return res.status(400).json({
                     message: "El artista ya existe",
                 });
             }
+            console.log("Artista no existente, creando nuevo artista");
             // Guardar el nuevo álbum con la ruta de la imagen
             const newArtista = await db.Artista.create({
                 nombre,
@@ -85,23 +91,22 @@ exports.createArtista = [
             });
             console.log("Artista creado:", { newArtista });
             res.status(201).json(newArtista);
-        } catch (error) {
-            console.error("Error al crear el artista:", error);
-            if (req.file) {
-                // Eliminar la imagen del servidor si hubo un error
-                const imagen = require("fs");
-                imagen.unlink(req.file.path, (err) => {
-                    if (err) {
-                        console.error("Error al eliminar la imagen:", err);
-                    }
+        }catch (error) {
+                console.error("Error al crear el artista:", error);
+                if (req.file) {
+                    const imagen = require("fs");
+                    imagen.unlink(req.file.path, (err) => {
+                        if (err) {
+                            console.error("Error al eliminar la imagen:", err);
+                        }
+                    });
                 }
-                )
-                res.status(500).json({
+                return res.status(500).json({
                     message: "Error al crear el artista",
                     error: error.message,
                 });
             }
-        }
+       
     }
 ]
 
