@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/album" element={<Albums />} />
-        <Route path="/genres/:id/artist" element={<Artist />} />
+        <Route path="/genres/:id" element={<Artist />} />
         <Route path="/songs" element={<Songs />} />
         <Route path="/genres" element={<Genres />} />
       </Routes>

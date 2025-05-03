@@ -18,17 +18,19 @@ exports.getArtistas = async (req, res) => {
     }
 }
 
-exports.getartistaById = async (req, res) => {
+exports.getArtistaByGeneroId = async (req, res) => {
     const id = req.params.id;
     try {
-        const artista = await db.Artista.findByPk(id);
+        const artista = await db.Artista.findAll()({
+            where: {
+                id_genero: id
+            }
+        });
         if (!artista) {
             return res.status(404).json({
                 message: "Artista no encontrado",
             });
         }
-        console.log("Artista encontrado:", { artista });
-
         res.send(artista);
     } catch (error) {
         console.error("Error al obtener el artista:", error);

@@ -23,7 +23,7 @@ const NavBar = () => {
     <Navbar style={navbarStyle} className="navbar-custom">
       <img
         style={spotifyIconStyle}
-        src="../public/Spotify-icon.png"
+        src="./../public/spotify.png"
         alt="Spotify"
       />
       <Container>

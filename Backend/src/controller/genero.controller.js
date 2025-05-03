@@ -27,6 +27,7 @@ exports.getgeneroById = async (req, res) => {
                 message: "Genero no encontrado",
             });
         }
+        
         console.log("Genero encontrado:", { genero });
 
         res.send(genero);

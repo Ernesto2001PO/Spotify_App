@@ -1,7 +1,37 @@
 import CardComponent from "../components/CardComponent";
-import { Row, Col, Container } from "react-bootstrap"; // Asegúrate de importar Container
+import { Row, Col, Container } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import ArtistRepository from "../repositories/Artistrepository";
 
 function Artist() {
+  const [artists, setArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const BASEURL = "http://localhost:3000";
+
+  useEffect(() => {
+    const fetchArtist = async () => {
+      try {
+        const data = await ArtistRepository.getallArtist();
+        console.log("Data fetched:", data);
+        setArtists(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArtist();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   const songListStyle = {
     backgroundColor: "#000000",
     padding: "20px",
@@ -11,7 +41,6 @@ function Artist() {
 
   return (
     <div>
-      {/* Contenedor para la lista de canciones */}
       <div style={songListStyle}>
         <h1 style={{ color: "#ffffff" }}>Artist List</h1>
         <p style={{ color: "#ffffff" }}>
@@ -19,19 +48,18 @@ function Artist() {
         </p>
       </div>
 
-      {/* Contenedor para las tarjetas */}
       <Container className="mt-4">
         <h1 className="text-dark">Welcome to the ARTIST Clone</h1>
         <Row className="mt-4">
-          <Col md={4}>
-            <CardComponent />
-          </Col>
-          <Col md={4}>
-            <CardComponent />
-          </Col>
-          <Col md={4}>
-            <CardComponent />
-          </Col>
+          {artists.map((artist) => (
+            <Col md={4} key={artist.id_artista}>
+              <CardComponent
+                title={artist.nombre}
+                imageUrl={`${BASEURL}/${artist.imagen}`}
+                buttonLink={`/albums/${artist.id_artista}/cancion`}
+              />
+            </Col>
+          ))}
         </Row>
       </Container>
     </div>

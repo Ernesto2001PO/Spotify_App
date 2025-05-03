@@ -3,7 +3,7 @@ module.exports = (app) => {
     const artistaController = require("../controller/artista.controller.js");
 
     router.get("/artista", artistaController.getArtistas);
-    router.get("/artista/:id", artistaController.getartistaById);
+    router.get("/artista/:id", artistaController.getArtistaByGeneroId);
     router.post("/artista", artistaController.createArtista);
     router.put("/artista/:id", artistaController.updateArtista);
     router.patch("/artista/:id", artistaController.patchArtista);

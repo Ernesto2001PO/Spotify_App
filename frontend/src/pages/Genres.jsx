@@ -53,7 +53,7 @@ function Genres() {
               <CardComponent
                 title={genre.nombre}
                 imageUrl={`${BASEURL}/${genre.imagen}`}
-                buttonLink={`/albums/${genre.id_genero}/artists`}
+                buttonLink={`/genres/${genre.id_genero}`}
               />
             </Col>
           ))}
