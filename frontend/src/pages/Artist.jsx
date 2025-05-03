@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+
+
 import CardComponent from "../components/CardComponent";
 import { Row, Col, Container } from "react-bootstrap";
 import ArtistRepository from "../repositories/Artistrepository";
@@ -11,16 +15,16 @@ function Artist() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const BASEURL = "http://localhost:3000";
-  const [idGenero] = useState(1); // Valor inicial
+  const { idGenero } = useParams(); 
 
   
   useEffect(() => {
     const fetchArtists = async () => {
-      console.log("Fetching artists with idGenero:", idGenero); // Log the idGenero value
+      console.log("Fetching artists with idGenero:", idGenero); 
       try {
-        const data = await ArtistRepository.getAllartists(idGenero); // La respuesta ya está en JSON
-        console.log("Data fetched from backend:", data); // Depuración
-        setArtists(data); // Accede a la propiedad 'artistas'
+        const data = await ArtistRepository.getAllartists(idGenero); 
+        console.log("Data fetched from backend:", data); 
+        setArtists(data); 
       } catch (error) {
         console.error("Error fetching artists:", error);
         setError(error.message);
