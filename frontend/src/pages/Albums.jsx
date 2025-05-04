@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 
 import CardComponent from "../components/CardComponent";
 import { Row, Col, Container } from "react-bootstrap";
@@ -10,7 +10,7 @@ function Albums() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const BASEURL = "http://localhost:3000";
-  const { idArtista } = useParams(); 
+  const { idArtista } = useParams();
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -58,11 +58,11 @@ function Albums() {
         <Row className="mt-4">
           {albums.map((album) => (
             <Col md={4} key={album.id_album}>
-                <CardComponent
-                  title={album.nombre}
-                  imageUrl={`${BASEURL}/${album.imagen}`}
-                  buttonLink={`/album`}
-                />
+              <CardComponent
+                title={album.nombre}
+                imageUrl={`${BASEURL}/${album.imagen}`}
+                songs={album.canciones}
+              />
             </Col>
           ))}
         </Row>

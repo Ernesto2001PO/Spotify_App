@@ -29,6 +29,7 @@ require("./routes/index")(app);
 
 
 
+
 db.sequelize
   .sync({
     force: false,

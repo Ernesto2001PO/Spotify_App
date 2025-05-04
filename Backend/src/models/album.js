@@ -26,6 +26,12 @@ module.exports = function (sequelize) {
       tableName: "album",
       timestamps: false,
     }
+
+
   );
+
+
+ 
+
   return Album;
 };

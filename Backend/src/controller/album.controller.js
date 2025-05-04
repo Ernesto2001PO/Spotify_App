@@ -22,10 +22,16 @@ exports.getAlbumByArtist = async (req, res) => {
     const { id_artista } = req.params;
     try {
         const albums = await db.Album.findAll({
-            where: {
-                id_artista: parseInt(id_artista),
-            },
+            where: { id_artista: id_artista },
+            include: [
+                {
+                    model: db.Cancion,
+                    as: "canciones", 
+                    attributes: ["id_cancion", "nombre"], 
+                },
+            ],
         });
+
         console.log("Valor de id_album:", id_artista);
         console.log("Albums encontrados por artistas:", { albums });
         res.send(albums);
@@ -195,7 +201,7 @@ exports.updateAlbum = [
             // Actualizar el álbum con la nueva información
             await existingAlbum.update({
                 nombre,
-                imagen:nuevaImagen,
+                imagen: nuevaImagen,
                 id_artista: parseInt(id_artista),
             });
             console.log("Album actualizado:", { existingAlbum });

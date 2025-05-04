@@ -10,6 +10,8 @@ const AlbumRepository = {
       throw error;
     }
   },
+  
 };
 
 export default AlbumRepository;
+

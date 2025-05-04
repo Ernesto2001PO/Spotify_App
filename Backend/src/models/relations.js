@@ -7,7 +7,7 @@ Genero.associate = (models) => {
     Genero.belongsTo(models.Artista, {
         foreignKey: "id_artista",
         as: "artista",
-        onDelete: "CASCADE",        
+        onDelete: "CASCADE",
     });
 }
 
@@ -21,6 +21,11 @@ Artista.associate = (models) => {
         onDelete: "CASCADE",
     });
 }
+
+
+
+
+
 
 
 

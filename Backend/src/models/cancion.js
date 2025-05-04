@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 
-module.exports = function (sequelize){
+module.exports = function (sequelize) {
   const Cancion = sequelize.define(
     "Cancion",
     {
@@ -27,5 +27,8 @@ module.exports = function (sequelize){
       timestamps: false,
     }
   );
+
+
+
   return Cancion;
 };
