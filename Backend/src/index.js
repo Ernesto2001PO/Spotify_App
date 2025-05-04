@@ -7,7 +7,6 @@ const db = require("./models/");
 const port = process.env.PORT || 3000;
 
 
-// El .env es para cargar las variables de entorno desde el archivo .env
 
 dotenv.config()
 

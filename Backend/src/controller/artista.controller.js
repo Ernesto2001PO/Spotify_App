@@ -1,6 +1,6 @@
 const db = require("../models/")
 const zod = require("zod");
-const { upload } = require("../config/multer-config");
+const { upload, getRelativePath } = require("../config/multer-config");
 
 
 exports.getArtistas = async (req, res) => {

@@ -27,7 +27,7 @@ exports.getAlbumByArtist = async (req, res) => {
                 {
                     model: db.Cancion,
                     as: "canciones", 
-                    attributes: ["id_cancion", "nombre"], 
+                    attributes: ["id_cancion", "nombre","audio"], 
                 },
             ],
         });

@@ -1,6 +1,6 @@
 const db = require("../models")
 const zod = require("zod");
-const { upload } = require("../config/multer-config");
+const { upload, getRelativePath } = require("../config/multer-config");
 
 
 exports.getCanciones = async (req, res) => {
@@ -151,33 +151,51 @@ exports.updateCancion = [
 
 
 exports.patchCancion = async (req, res) => {
-    if (!req.body) {
-        return { errors: { message: "Petición inválida" } };
-    }
-    const { id } = req.params;
-    const cancion = await db.Cancion.findByPk(id);
-    if (!cancion) {
-        return res.status(404).send({ message: 'Persona no encontrada' });
-    }
-    const { nombre, imagen, id_album } = req.body;
-    if (nombre) {
-        cancion.nombre = nombre;
-    }
-    if (imagen) {
-        cancion.imagen = imagen;
-    }
-    if (id_album) {
-        cancion.id_album = id_album;
-    }
+    try {
+        // Verificar si req.body está definido y no está vacío
+        if (!req.body || !Object.keys(req.body).length) {
+            return res.status(400).json({ message: "Petición inválida: No se enviaron datos" });
+        }
 
-    const cancionSaved = await cancion.save();
-    if (!cancionSaved) {
-        res.status(500).send({ message: "Error al editar la persona" });
-        return;
-    }
-    res.send(cancionSaved);
-}
+        const { id } = req.params;
+        const cancion = await db.Cancion.findByPk(id);
 
+        // Verificar si la canción existe
+        if (!cancion) {
+            return res.status(404).json({ message: "Canción no encontrada" });
+        }
+
+        // Extraer los datos del cuerpo de la petición
+        const { nombre, audio, id_album } = req.body;
+
+        // Actualizar los campos si están presentes
+        if (nombre) {
+            cancion.nombre = nombre;
+        }
+        if (audio) {
+            cancion.audio = audio;
+        }
+        if (id_album) {
+            const album = await db.Album.findByPk(id_album);
+            if (!album) {
+                return res.status(404).json({ message: "Álbum no encontrado" });
+            }
+            cancion.id_album = id_album;
+        }
+
+        // Guardar los cambios
+        const cancionSaved = await cancion.save();
+
+        // Responder con la canción actualizada
+        res.status(200).json(cancionSaved);
+    } catch (error) {
+        console.error("Error al actualizar la canción:", error);
+        res.status(500).json({
+            message: "Error al actualizar la canción",
+            error: error.message,
+        });
+    }
+};
 
 exports.deleteCancion = async (req, res) => {
     const id = req.params.id;

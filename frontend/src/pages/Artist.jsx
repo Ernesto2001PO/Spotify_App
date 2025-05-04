@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 
 
-import CardComponent from "../components/CardComponent";
+import CardComponent2 from "../components/CardComponent2";
 import { Row, Col, Container } from "react-bootstrap";
 import ArtistRepository from "../repositories/Artistrepository";
 
@@ -67,7 +67,7 @@ function Artist() {
         <Row className="mt-4">
           {artists.map((artist) => (
             <Col md={4} key={artist.id_artista}>
-              <CardComponent
+              <CardComponent2
                 title={artist.nombre}
                 imageUrl={`${BASEURL}/${artist.imagen}`}
                 buttonLink={`/artists/albums/${artist.id_artista}`} 

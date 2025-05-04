@@ -1,4 +1,4 @@
-import CardComponent from "../components/CardComponent";
+import CardComponent2 from "../components/CardComponent2";
 import { Row, Col, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import GenreRepository from "../repositories/Genrerepository";
@@ -50,7 +50,7 @@ function Genres() {
         <Row className="mt-4">
           {genres.map((genre) => (
             <Col md={4} key={genre.id_genero}>
-              <CardComponent
+              <CardComponent2
                 title={genre.nombre}
                 imageUrl={`${BASEURL}/${genre.imagen}`}
                 buttonLink={`/genres/artists/${genre.id_genero}`}

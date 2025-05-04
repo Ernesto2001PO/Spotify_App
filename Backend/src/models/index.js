@@ -13,22 +13,21 @@ module.exports = {
     sequelize,
 };
 
-// Configurar las asociaciones entre los modelos
 Album.associate = (models) => {
     Album.hasMany(models.Cancion, {
         foreignKey: "id_album",
-        as: "canciones", // Alias para incluir canciones relacionadas
+        as: "canciones",
     });
     Album.belongsTo(models.Artista, {
         foreignKey: "id_artista",
-        as: "artista", // Alias para incluir el artista relacionado
+        as: "artista",
     });
 };
 
 Cancion.associate = (models) => {
     Cancion.belongsTo(models.Album, {
         foreignKey: "id_album",
-        as: "album", // Alias para incluir el álbum relacionado
+        as: "album",
     });
 };
 

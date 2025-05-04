@@ -1,7 +1,6 @@
 const db = require("../models/")
 const zod = require("zod");
-const { upload } = require("../config/multer-config");
-const { get } = require("http");
+const { upload,getRelativePath } = require("../config/multer-config");
 
 
 exports.getGeneros = async (req, res) => {
