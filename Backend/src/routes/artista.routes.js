@@ -4,6 +4,9 @@ module.exports = (app) => {
 
     router.get("/artista", artistaController.getArtistas);
     router.get("/artista/:id_genero", artistaController.getArtistaByGenero);
+    router.get("/artista/get/:id", artistaController.getArtistById);
+
+    
     router.post("/artista", artistaController.createArtista);
     router.put("/artista/:id", artistaController.updateArtista);
     router.patch("/artista/:id", artistaController.patchArtista);

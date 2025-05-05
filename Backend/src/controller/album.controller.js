@@ -26,8 +26,8 @@ exports.getAlbumByArtist = async (req, res) => {
             include: [
                 {
                     model: db.Cancion,
-                    as: "canciones", 
-                    attributes: ["id_cancion", "nombre","audio"], 
+                    as: "canciones",
+                    attributes: ["id_cancion", "nombre", "audio"],
                 },
             ],
         });
@@ -43,8 +43,26 @@ exports.getAlbumByArtist = async (req, res) => {
         });
     }
 }
+exports.getAlbumbyId = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const album = await db.Album.findByPk(id);
+        if (!album) {
+            return res.status(404).json({
+                message: "Album no encontrado",
+            });
+        }
+        console.log("Album encontrado:", { album });
 
-
+        res.send(album);
+    } catch (error) {
+        console.error("Error al obtener el album:", error);
+        res.status(500).json({
+            message: "Error al obtener el album",
+            error: error.message,
+        });
+    }
+}
 
 exports.createAlbum = async (req, res) => {
     const { nombre, imagen, id_artista } = req.body;

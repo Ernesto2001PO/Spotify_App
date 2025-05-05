@@ -19,7 +19,7 @@ exports.getArtistas = async (req, res) => {
 }
 
 exports.getArtistaByGenero = async (req, res) => {
-    const {id_genero} = req.params;
+    const { id_genero } = req.params;
     try {
         const artistas = await db.Artista.findAll({
             where: {
@@ -35,13 +35,31 @@ exports.getArtistaByGenero = async (req, res) => {
             message: "Error al obtener los artistas por género",
             error: error.message,
         });
-    } 
+    }
+}
+exports.getArtistById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const artista = await db.Artista.findByPk(id);
+        if (!artista) {
+            return res.status(404).json({
+                message: "Artista no encontrado",
+            });
+        }
+        console.log("Artista encontrado:", { artista });
+
+        res.send(artista);
+    } catch (error) {
+        console.error("Error al obtener el artista:", error);
+        res.status(500).json({
+            message: "Error al obtener el artista",
+            error: error.message,
+        });
+    }
 }
 
-
-
 exports.createArtista = [
-    upload.single("imagen"), 
+    upload.single("imagen"),
     async (req, res) => {
         const { nombre, id_genero } = req.body;
         try {
@@ -52,7 +70,7 @@ exports.createArtista = [
                 id_genero: zod.string().min("El id del artista debe ser un número positivo"),
             });
 
-            const result = artistaValidate.safeParse({ nombre, id_genero});
+            const result = artistaValidate.safeParse({ nombre, id_genero });
             if (!result.success) {
                 return res.status(400).json({
                     message: "Error de validación",
@@ -94,22 +112,22 @@ exports.createArtista = [
             });
             console.log("Artista creado:", { newArtista });
             res.status(201).json(newArtista);
-        }catch (error) {
-                console.error("Error al crear el artista:", error);
-                if (req.file) {
-                    const imagen = require("fs");
-                    imagen.unlink(req.file.path, (err) => {
-                        if (err) {
-                            console.error("Error al eliminar la imagen:", err);
-                        }
-                    });
-                }
-                return res.status(500).json({
-                    message: "Error al crear el artista",
-                    error: error.message,
+        } catch (error) {
+            console.error("Error al crear el artista:", error);
+            if (req.file) {
+                const imagen = require("fs");
+                imagen.unlink(req.file.path, (err) => {
+                    if (err) {
+                        console.error("Error al eliminar la imagen:", err);
+                    }
                 });
             }
-       
+            return res.status(500).json({
+                message: "Error al crear el artista",
+                error: error.message,
+            });
+        }
+
     }
 ]
 

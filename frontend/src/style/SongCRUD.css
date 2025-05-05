@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+  color: #000000;
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+p {
+  color: #000000;
+  line-height: 1.1;
+}
+body {
+  width: 100%;
+  font-family: "Arial", sans-serif;
+  background-color: #ffffff;
+}
+.Home{
+  width: 100%;
+}
+
+
+
+th {
+  background-color: #121212;
+  color: #000000;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+td {
+  padding: 10px;
+  color: #000000;
+  border-bottom: 1px solid #333;
+}

@@ -34,20 +34,8 @@ const NavBar = () => {
           <NavLink to="/genres" style={linkStyle} className="nav-link">
             Genres
           </NavLink>
-        </Nav>
-        <Nav className="ml-auto">
-          <NavLink to="/album" style={linkStyle} className="nav-link">
-            Albums
-          </NavLink>
-        </Nav>
-        <Nav className="ml-auto">
-          <NavLink to="/artist" style={linkStyle} className="nav-link">
-            Artist
-          </NavLink>
-        </Nav>
-        <Nav className="me-auto">
-          <NavLink to="/songs" style={linkStyle} className="nav-link">
-            Songs
+          <NavLink to="/admin" style={linkStyle} className="nav-link">
+            Admin
           </NavLink>
         </Nav>
       </Container>

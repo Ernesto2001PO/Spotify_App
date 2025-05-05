@@ -39,10 +39,8 @@ exports.getgeneroById = async (req, res) => {
     }
 }
 
-
-
 exports.createGenero = [
-    upload.single("imagen"), // Middleware para procesar el archivo con el campo "imagen"
+    upload.single("imagen"), 
     async (req, res) => {
         const { nombre } = req.body;
         try {
