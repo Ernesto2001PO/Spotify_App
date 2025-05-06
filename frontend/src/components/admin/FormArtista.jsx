@@ -10,7 +10,6 @@ import {
 } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Artistarepository from "../../repositories/Artistrepository";
-import GeneroRepository from "../../repositories/Genrerepository";
 
 const FormArtista = () => {
   const navigate = useNavigate();
@@ -19,21 +18,10 @@ const FormArtista = () => {
   const [imagen, setImagen] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [id_genero, setIdGenero] = useState("");
-  const [generos, setGeneros] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const BASEURL = "http://localhost:3000";
 
   useEffect(() => {
-    const fetchGeneros = async () => {
-      try {
-        const data = await GeneroRepository.getAllGenres();
-        setGeneros(data); // Guardar la lista de géneros en el estado
-      } catch (error) {
-        console.error("Error al cargar los géneros:", error);
-      }
-    };
-    fetchGeneros();
-
     if (id) {
       setIsEdit(true);
       const fetchArtista = async () => {
@@ -134,19 +122,13 @@ const FormArtista = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label> Genero</label>
-                  <Form.Select
+                  <label>ID del Genero</label>
+                  <FormControl
                     required
+                    type="number"
                     value={id_genero}
                     onChange={(e) => setIdGenero(e.target.value)}
-                  >
-                    <option value="">Selecciona un género</option>
-                    {generos.map((genero) => (
-                      <option key={genero.id_genero} value={genero.id_genero}>
-                        {genero.nombre}
-                      </option>
-                    ))}
-                  </Form.Select>
+                  />
                 </div>
 
                 <div className="mt-2">

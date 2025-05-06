@@ -7,11 +7,9 @@ import {
   Form,
   FormControl,
   Button,
-  FormSelect,
 } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Albumrepository from "../../repositories/Albumrepository";
-import ArtistRepository from "../../repositories/Artistrepository";
 
 const FormAlbum = () => {
   const navigate = useNavigate();
@@ -20,21 +18,10 @@ const FormAlbum = () => {
   const [imagen, setImagen] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [id_artista, setIdAlbum] = useState("");
-  const [artistas, setArtistas] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const BASEURL = "http://localhost:3000";
 
   useEffect(() => {
-    const fetchArtistas = async () => {
-      try {
-        const data = await ArtistRepository.getArtistas();
-        setArtistas(data);
-      } catch (error) {
-        console.error("Error al cargar los géneros:", error);
-      }
-    };
-    fetchArtistas();
-
     if (id) {
       setIsEdit(true);
       const fetchAlbum = async () => {
@@ -44,7 +31,7 @@ const FormAlbum = () => {
           setIdAlbum(data.id_artista);
 
           setPreviewUrl(`${BASEURL}/${data.imagen}`);
-          setImagen(null); 
+          setImagen(null); // Imagen aún no cambiada
         } catch (error) {
           console.error("Error al cargar la canción:", error);
         }
@@ -135,15 +122,13 @@ const FormAlbum = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label>Artistas</label>
-                  <FormSelect>
-                    <option value="">Selecciona un artista</option>
-                    {artistas.map((artista) => (
-                      <option key={artista.id} value={artista.id}>
-                        {artista.nombre}
-                      </option>
-                    ))}
-                  </FormSelect>
+                  <label>ID del Artista</label>
+                  <FormControl
+                    required
+                    type="number"
+                    value={id_artista}
+                    onChange={(e) => setIdAlbum(e.target.value)}
+                  />
                 </div>
 
                 <div className="mt-2">

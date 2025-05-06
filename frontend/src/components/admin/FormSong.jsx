@@ -7,11 +7,9 @@ import {
   Form,
   FormControl,
   Button,
-  FormSelect,
 } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import SongRepository from "../../repositories/Songrepository";
-import AlbumRepository from "../../repositories/Albumrepository";
 
 const FormSong = () => {
   const navigate = useNavigate();
@@ -19,20 +17,9 @@ const FormSong = () => {
   const [nombre, setNombre] = useState("");
   const [audio, setAudio] = useState(null);
   const [id_album, setIdAlbum] = useState("");
-  const [albums, setAlbums] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    const fetchAlbums = async () => {
-      try {
-        const data = await AlbumRepository.getAlbumes();
-        setAlbums(data);
-      } catch (error) {
-        console.error("Error al cargar los álbumes:", error);
-      }
-    };
-    fetchAlbums();
-
     if (id) {
       setIsEdit(true);
       const fetchSong = async () => {
@@ -108,15 +95,13 @@ const FormSong = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label>Albumes</label>
-                  <FormSelect>
-                    <option value="">Selecciona un álbum</option>
-                    {albums.map((album) => (
-                      <option key={album.id} value={album.id}>
-                        {album.nombre}
-                      </option>
-                    ))}
-                  </FormSelect>
+                  <label>ID del Álbum</label>
+                  <FormControl
+                    required
+                    type="number"
+                    value={id_album}
+                    onChange={(e) => setIdAlbum(e.target.value)}
+                  />
                 </div>
                 <div className="mt-2">
                   <Button variant="primary" type="submit">
