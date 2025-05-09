@@ -19,8 +19,6 @@ app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 
-// Cargar relaciones
-require("./models/relations")
 
 // Cargar rutas
 require("./routes/index")(app);
