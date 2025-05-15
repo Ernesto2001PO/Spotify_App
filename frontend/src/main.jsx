@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./style/index.css";
 
-import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Artist from "./pages/Artist";
 import Albums from "./pages/Albums";
@@ -16,13 +15,14 @@ import FormSong from "./components/admin/FormSong";
 import FormAlbum from "./components/admin/FormAlbum";
 import FormArtista from "./components/admin/FormArtista";
 import FormGenero from "./components/admin/FormGenres";
+import Login from "./pages/Login";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
         <Route path="/genres" element={<Genres />} />
         <Route path="/artists/albums/:idArtista" element={<Albums />} />
         <Route path="/genres/artists/:idGenero" element={<Artist />} />

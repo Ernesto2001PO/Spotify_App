@@ -28,8 +28,7 @@ const NavBar = () => {
       />
       <Container>
         <Navbar.Brand href="/" style={linkStyle} className="nav-link">
-          Home
-        </Navbar.Brand>
+          Login        </Navbar.Brand>
         <Nav className="ml-auto">
           <NavLink to="/genres" style={linkStyle} className="nav-link">
             Genres
